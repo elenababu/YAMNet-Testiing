@@ -109,6 +109,24 @@ def yamnet_predict(filename, min_confidence=0.1):
 
 
 if __name__ == "__main__":
-    audio_path = os.path.join(SCRIPT_DIR, "audio", "test.wav")
-    print("Using audio file:", audio_path)
-    yamnet_predict(audio_path)
+    audio_dir = os.path.join(SCRIPT_DIR, "audio")
+
+    # List all files in /audio that end with .wav, .mp3, or .m4a (optional)
+    audio_files = [
+        f for f in os.listdir(audio_dir)
+        if f.lower().endswith((".wav", ".mp3", ".m4a"))
+    ]
+
+    print(f"Found {len(audio_files)} audio files in {audio_dir}\n")
+
+    # Loop through and test each file
+    for file_name in audio_files:
+        audio_path = os.path.join(audio_dir, file_name)
+        print("=" * 80)
+        print(f"Testing file: {file_name}")
+        print("=" * 80)
+        try:
+            yamnet_predict(audio_path)
+        except Exception as e:
+            print(f"⚠️  Error processing {file_name}: {e}")
+        print("\n")
